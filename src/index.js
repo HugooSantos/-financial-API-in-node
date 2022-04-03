@@ -101,5 +101,34 @@ app.post("/withdraw",verifyExistsAccountCpf,  (request,response) => {
 
     return response.status(201).send()
 })
+
+app.get("/statement/date",verifyExistsAccountCpf ,(request,response)=>{
+    
+    const { customer } = request
+    const { date } = request.query
+
+    const dateFormat = new Date(date + " 00:00")
+
+    const statement = customer.statement.filter((statement) => 
+    statement.created_at.toDateString() === new Date(dateFormat).toDateString())
+
+    return response.json(statement)
+})
+
+app.put("/account",verifyExistsAccountCpf ,(request,response) =>{
+    const {name} = request.body
+    const {customer} = request
+
+    customer.name = name
+
+    return response.status(201).send()
+})
+
+app.get("/account", verifyExistsAccountCpf,(request,response)=> {
+    const {customer} = request
+
+    return response.json(customer)
+}) 
+
 app.listen(3001)
 
