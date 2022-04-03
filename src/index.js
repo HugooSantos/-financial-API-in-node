@@ -139,7 +139,13 @@ app.delete("/account", verifyExistsAccountCpf, (request,response) => {
 
 })
 
+app.get("/balance",verifyExistsAccountCpf, (request, response)=> {
+    const { customer} = request
 
+    const balance = getBalance(customer.statement)
+
+    return response.json(balance)
+})
 
 app.listen(3001)
 
